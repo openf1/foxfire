@@ -5,6 +5,7 @@ from flask import url_for
 
 from app import app
 from app.forms import SigninForm
+from app.forms import SignupForm
 
 
 @app.route("/")
@@ -22,9 +23,12 @@ def signin():
     return render_template("signin.html", title="Sign In", form=form)
 
 
-@app.route("/account/signup")
+@app.route("/account/signup", methods=["GET", "POST"])
 def signup():
-    return "Sign up here!"
+    form = SignupForm()
+    if form.validate_on_submit():
+        return "Welcome!"
+    return render_template("signup.html", title="Sign Up", form=form)
 
 
 @app.route("/account/forgotpassword")
