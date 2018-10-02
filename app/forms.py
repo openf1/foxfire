@@ -6,8 +6,12 @@ from wtforms.validators import DataRequired
 
 
 class SigninForm(FlaskForm):
-    email = StringField("Email", validators=[DataRequired()])
-    password = PasswordField("Password", validators=[DataRequired()])
+    email = StringField(
+        "Email", validators=[DataRequired(
+            message="Please enter your email address")])
+    password = PasswordField(
+        "Password", validators=[DataRequired(
+            message="Please enter your password")])
     submit = SubmitField("Sign In")
 
 

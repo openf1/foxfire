@@ -1,3 +1,4 @@
+from flask import flash
 from flask import redirect
 from flask import render_template
 from flask import url_for
@@ -16,6 +17,8 @@ def signin():
     form = SigninForm()
     if form.validate_on_submit():
         return redirect(url_for("dashboard"))
+    if form.errors:
+        flash("Username or password was incorrect")
     return render_template("signin.html", title="Sign In", form=form)
 
 
