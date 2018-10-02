@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="stripe">
+    <div class="container">
+      <div class="col-md-6 m-auto">
+        <form method="post" novalidate>
+          {{ form.hidden_tag() }}
+          <div class="flex-column d-flex">
+	    <h3>Sign in to your openf1 account</h3>
+	    <div class="row">
+	      <div class="form-group col-12">
+                {{ form.email.label(class_="control-label text-right") }}
+                {{ form.email(class_="form-control") }}
+                {% for error in form.email.errors %}
+		  <span class="field-validation-valid help-block">{{ error }}</span>
+                {% endfor %}
+	      </div>
+	    </div>
+	    <div class="row">
+	      <div class="form-group col-12">
+                {{ form.password.label(class_="control-label text-right") }}
+                {{ form.password(class_="form-control") }}
+                {% for error in form.password.errors %}
+		  <span class="field-validation-valid help-block">{{ error }}</span>
+		{% endfor %}
+	      </div>
+	    </div>
+	  </div>
+	  <div class="flex-row-reverse d-flex justify-content-between">
+	    {{ form.submit(class_="btn btn-success") }}
+	    <a href="/account/forgotpassword">Forgot your password?</a>
+	  </div>
+	</form>
+      </div>
+    </div>
+  </section>
+{% endblock %}

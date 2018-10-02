@@ -1,0 +1,87 @@
+<style>
+  .navbar-collapse {
+    margin-right:30px;
+  }
+  .navbar-group {
+    display:flex;
+    justify-content: space-between;
+  }
+  .navbar-items {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .navbar-toggle {
+    color: #fff;
+    border:0px;
+  }
+  .navbar-toggle .fa {
+    font-size: 2.5rem;
+  }
+  .navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+    border:0px;
+    background-color: transparent;
+    color:#74c0fb;
+  }
+  .actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 14px 0;
+  }
+  .actions a.account {
+    color: #fff;
+    padding: 0 14px 5px;
+    font-size: 18px;
+  }
+  .actions a.account:hover {
+    color: #74c0fb;
+    text-decoration: none;
+  }
+  .actions a.account:hover + .tooltip {
+    display: block;
+    opacity: 1;
+  }
+  .actions a.account +.tooltip {
+    font-size:13px;
+    position: absolute;
+    z-index: 1;
+    background: #f8f8f8;
+    border: 1px solid #f0f0f0;
+    top: 63px;
+    padding: 8px;
+    color: #333;
+    display: none;
+    opacity: 0;
+  }
+  @media (max-width:768px) {
+    .actions {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 14px 0;
+      position: absolute;
+      right: 0;
+      top: -17px;
+    }
+    .navbar-inverse .navbar-collapse {
+      left: 0;
+      position: absolute;
+      background-color: #0f2535;
+      width: 100%;
+      top: 55px;
+      overflow: visible;
+      border: none;
+    }
+    .navbar-fixed-top .navbar-collapse {
+      max-height: none;
+    }
+    .navbar-brand {
+      padding: 11px 15px;
+    }
+    .actions a.account +.tooltip {
+      top: 73px;
+    }
+  }
+</style>
