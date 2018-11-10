@@ -9,3 +9,5 @@ python:
 
 install:
     - pip install -U pipenv
+
+script: echo "hello, travis!"
