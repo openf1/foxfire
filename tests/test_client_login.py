@@ -50,9 +50,9 @@ class FlaskClientLoginTestCase(TestCase):
         WHEN sending an HTTP POST request to '/auth/login' without password
         THEN login page is returned
         """
-        response = self.client.post('/auth/login', data={
-            'email': 'john@example.com'
-        })
+        response = self.client.post(
+            '/auth/login',
+            data={'email': 'john@example.com'})
         self.assert_200(response)
         self.assertTrue(re.search('Please enter your password',
                         response.get_data(as_text=True)))
@@ -64,9 +64,9 @@ class FlaskClientLoginTestCase(TestCase):
         WHEN sending an HTTP POST request to '/auth/login' without email
         THEN login page is returned
         """
-        response = self.client.post('/auth/login', data={
-            'password': 'cat'
-        })
+        response = self.client.post(
+            '/auth/login',
+            data={'password': 'cat'})
         self.assert_200(response)
         self.assertTrue(re.search('Please enter your email address',
                         response.get_data(as_text=True)))
@@ -78,10 +78,11 @@ class FlaskClientLoginTestCase(TestCase):
         WHEN sending an HTTP POST request to '/auth/login' with unknown email
         THEN login page is returned
         """
-        response = self.client.post('/auth/login', data={
-            'email': 'dave@example.com',
-            'password': 'cat'
-        }, follow_redirects=True)
+        response = self.client.post(
+            '/auth/login',
+            data={'email': 'dave@example.com',
+                  'password': 'cat'},
+            follow_redirects=True)
         self.assert_200(response)
         self.assert_message_flashed('Username or password was incorrect',
                                     category='error')
@@ -90,13 +91,15 @@ class FlaskClientLoginTestCase(TestCase):
     def test_login_with_wrong_password_data(self):
         """
         GIVEN an anonymous user
-        WHEN sending an HTTP POST request to '/auth/login' with incorrect password
+        WHEN sending an HTTP POST request to '/auth/login'
+             with incorrect password
         THEN login page is returned
         """
-        response = self.client.post('/auth/login', data={
-            'email': 'john@example.com',
-            'password': 'dog'
-        }, follow_redirects=True)
+        response = self.client.post(
+            '/auth/login',
+            data={'email': 'john@example.com',
+                  'password': 'dog'},
+            follow_redirects=True)
         self.assert_200(response)
         self.assert_message_flashed('Username or password was incorrect',
                                     category='error')
@@ -109,12 +112,16 @@ class FlaskClientLoginTestCase(TestCase):
         THEN application dashboard page is returned
         """
         with self.client:
-            self.client.post('/auth/login', data={
-                'email': 'john@example.com',
-                'password': 'cat'}, follow_redirects=True)
+            self.client.post(
+                '/auth/login',
+                data={'email': 'john@example.com',
+                      'password': 'cat'},
+                follow_redirects=True)
 
-            response = self.client.post('/auth/login', data={
-                'email': 'john@example.com',
-                'password': 'cat'}, follow_redirects=True)
+            response = self.client.post(
+                '/auth/login',
+                data={'email': 'john@example.com',
+                      'password': 'cat'},
+                follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('application/dashboard.html')

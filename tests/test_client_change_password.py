@@ -1,5 +1,4 @@
 import re
-import time
 
 from flask_testing import TestCase
 
@@ -31,8 +30,9 @@ class FlaskClientChangePasswordTestCase(TestCase):
         WHEN sending an HTTP GET request to '/auth/change_password'
         THEN login page is returned
         """
-        response = self.client.get('/auth/change_password',
-                                   follow_redirects=True)
+        response = self.client.get(
+            '/auth/change_password',
+            follow_redirects=True)
         self.assert_200(response)
         self.assert_template_used('auth/login.html')
 
@@ -43,12 +43,15 @@ class FlaskClientChangePasswordTestCase(TestCase):
         THEN change password page is returned
         """
         with self.client:
-            self.client.post('/auth/login', data = {
-                'email': 'john@example.com',
-                'password': 'cat'}, follow_redirects=True)
+            self.client.post(
+                '/auth/login',
+                data={'email': 'john@example.com',
+                      'password': 'cat'},
+                follow_redirects=True)
 
-            response = self.client.get('/auth/change_password',
-                                   follow_redirects=True)
+            response = self.client.get(
+                '/auth/change_password',
+                follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('auth/change_password.html')
 
@@ -58,25 +61,29 @@ class FlaskClientChangePasswordTestCase(TestCase):
         WHEN sending an HTTP POST request to '/auth/change_password'
         THEN login page is returned
         """
-        response = self.client.post('/auth/change_password',
-                                   follow_redirects=True)
+        response = self.client.post(
+            '/auth/change_password',
+            follow_redirects=True)
         self.assert_200(response)
         self.assert_template_used('auth/login.html')
 
     def test_change_password_page_after_login_with_no_data(self):
         """
         GIVEN an authenticated user
-        WHEN sending an HTTP POST request to '/auth/change_password' 
+        WHEN sending an HTTP POST request to '/auth/change_password'
              without form data
         THEN change password page is returned
         """
         with self.client:
-            self.client.post('/auth/login', data = {
-                'email': 'john@example.com',
-                'password': 'cat'}, follow_redirects=True)
+            self.client.post(
+                '/auth/login',
+                data={'email': 'john@example.com',
+                      'password': 'cat'},
+                follow_redirects=True)
 
-            response = self.client.post('/auth/change_password',
-                                        follow_redirects=True)
+            response = self.client.post(
+                '/auth/change_password',
+                follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('auth/change_password.html')
 
@@ -88,13 +95,17 @@ class FlaskClientChangePasswordTestCase(TestCase):
         THEN change password page is returned
         """
         with self.client:
-            self.client.post('/auth/login', data = {
-                'email': 'john@example.com',
-                'password': 'cat'}, follow_redirects=True)
+            self.client.post(
+                '/auth/login',
+                data={'email': 'john@example.com',
+                      'password': 'cat'},
+                follow_redirects=True)
 
-            response = self.client.post('/auth/change_password', data={
-                'password': 'S3cret!!',
-                'password2': 'S3cret!!'}, follow_redirects=True)
+            response = self.client.post(
+                '/auth/change_password',
+                data={'password': 'S3cret!!',
+                      'password2': 'S3cret!!'},
+                follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('auth/change_password.html')
             self.assertTrue(re.search('Please enter your current password',
@@ -103,18 +114,22 @@ class FlaskClientChangePasswordTestCase(TestCase):
     def test_change_password_after_login_missing_new_password(self):
         """
         GIVEN an authenticated user
-        WHEN sending an HTTP POST request to '/auth/change_password' without
-             new password
+        WHEN sending an HTTP POST request to '/auth/change_password'
+             without new password
         THEN change password page is returned
         """
         with self.client:
-            self.client.post('/auth/login', data = {
-                'email': 'john@example.com',
-                'password': 'cat'}, follow_redirects=True)
+            self.client.post(
+                '/auth/login',
+                data={'email': 'john@example.com',
+                      'password': 'cat'},
+                follow_redirects=True)
 
-            response = self.client.post('/auth/change_password', data={
-                'old_password': 'cat',
-                'password2': 'S3cret!!'}, follow_redirects=True)
+            response = self.client.post(
+                '/auth/change_password',
+                data={'old_password': 'cat',
+                      'password2': 'S3cret!!'},
+                follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('auth/change_password.html')
             self.assertTrue(re.search(
@@ -125,18 +140,22 @@ class FlaskClientChangePasswordTestCase(TestCase):
     def test_change_password_after_login_missing_new_password2(self):
         """
         GIVEN an authenticated user
-        WHEN sending an HTTP POST request to '/auth/change_password' without
-             new password confirmation field
+        WHEN sending an HTTP POST request to '/auth/change_password'
+             without new password confirmation field
         THEN change password page is returned
         """
         with self.client:
-            self.client.post('/auth/login', data = {
-                'email': 'john@example.com',
-                'password': 'cat'}, follow_redirects=True)
+            self.client.post(
+                '/auth/login',
+                data={'email': 'john@example.com',
+                      'password': 'cat'},
+                follow_redirects=True)
 
-            response = self.client.post('/auth/change_password', data={
-                'old_password': 'cat',
-                'password': 'S3cret!!'}, follow_redirects=True)
+            response = self.client.post(
+                '/auth/change_password',
+                data={'old_password': 'cat',
+                      'password': 'S3cret!!'},
+                follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('auth/change_password.html')
             self.assertTrue(re.search('Please confirm your new password',
@@ -145,19 +164,23 @@ class FlaskClientChangePasswordTestCase(TestCase):
     def test_change_password_after_login_incorrect_current_password(self):
         """
         GIVEN an authenticated user
-        WHEN sending an HTTP POST request to '/auth/change_password' with
-             incorrect current password
+        WHEN sending an HTTP POST request to '/auth/change_password'
+             with incorrect current password
         THEN change password page is returned
         """
         with self.client:
-            self.client.post('/auth/login', data = {
-                'email': 'john@example.com',
-                'password': 'cat'}, follow_redirects=True)
+            self.client.post(
+                '/auth/login',
+                data={'email': 'john@example.com',
+                      'password': 'cat'},
+                follow_redirects=True)
 
-            response = self.client.post('/auth/change_password', data={
-                'old_password': 'dog',
-                'password': 'S3cret!!',
-                'password2': 'S3cret!!'}, follow_redirects=True)
+            response = self.client.post(
+                '/auth/change_password',
+                data={'old_password': 'dog',
+                      'password': 'S3cret!!',
+                      'password2': 'S3cret!!'},
+                follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('auth/change_password.html')
             self.assert_message_flashed(
@@ -172,14 +195,18 @@ class FlaskClientChangePasswordTestCase(TestCase):
         THEN change password page is returned
         """
         with self.client:
-            self.client.post('/auth/login', data = {
-                'email': 'john@example.com',
-                'password': 'cat'}, follow_redirects=True)
+            self.client.post(
+                '/auth/login',
+                data={'email': 'john@example.com',
+                      'password': 'cat'},
+                follow_redirects=True)
 
-            response = self.client.post('/auth/change_password', data = {
-                'old_password': 'cat',
-                'password': 'dog',
-                'password2': 'dog'}, follow_redirects=True)
+            response = self.client.post(
+                '/auth/change_password',
+                data={'old_password': 'cat',
+                      'password': 'dog',
+                      'password2': 'dog'},
+                follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('auth/change_password.html')
             self.assertTrue(re.search(
@@ -190,19 +217,23 @@ class FlaskClientChangePasswordTestCase(TestCase):
     def test_change_password_after_login_new_password_do_not_match(self):
         """
         GIVEN an authenticated user
-        WHEN sending an HTTP POST request to '/auth/change_password' where
-             new passwords do no match
+        WHEN sending an HTTP POST request to '/auth/change_password'
+             where new passwords do no match
         THEN change password page is returned
         """
         with self.client:
-            self.client.post('/auth/login', data = {
-                'email': 'john@example.com',
-                'password': 'cat'}, follow_redirects=True)
+            self.client.post(
+                '/auth/login',
+                data={'email': 'john@example.com',
+                      'password': 'cat'},
+                follow_redirects=True)
 
-            response = self.client.post('/auth/change_password', data={
-                'old_password': 'cat',
-                'password': 'S3cret!!',
-                'password2': 'S3cret!!!'}, follow_redirects=True)
+            response = self.client.post(
+                '/auth/change_password',
+                data={'old_password': 'cat',
+                      'password': 'S3cret!!',
+                      'password2': 'S3cret!!!'},
+                follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('auth/change_password.html')
             self.assertTrue(re.search('Please confirm your new password',
@@ -211,19 +242,23 @@ class FlaskClientChangePasswordTestCase(TestCase):
     def test_change_password_after_login_valid_new_password(self):
         """
         GIVEN an authenticated user
-        WHEN sending an HTTP POST request to '/auth/change_password' with
-             valid new password
+        WHEN sending an HTTP POST request to '/auth/change_password'
+             with valid new password
         THEN application dashboard page is returned
         """
         with self.client:
-            self.client.post('/auth/login', data = {
-                'email': 'john@example.com',
-                'password': 'cat'}, follow_redirects=True)
+            self.client.post(
+                '/auth/login',
+                data={'email': 'john@example.com',
+                      'password': 'cat'},
+                follow_redirects=True)
 
-            response = self.client.post('/auth/change_password', data={
-                'old_password': 'cat',
-                'password': 'S3cret!!',
-                'password2': 'S3cret!!'}, follow_redirects=True)
+            response = self.client.post(
+                '/auth/change_password',
+                data={'old_password': 'cat',
+                      'password': 'S3cret!!',
+                      'password2': 'S3cret!!'},
+                follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('application/dashboard.html')
             self.assert_message_flashed(

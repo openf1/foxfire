@@ -1,5 +1,4 @@
 import re
-import time
 
 from flask_testing import TestCase
 
@@ -51,7 +50,7 @@ class FlaskClientEditProfileTestCase(TestCase):
                 'password': 'cat'}, follow_redirects=True)
 
             response = self.client.get('/account/edit',
-                                   follow_redirects=True)
+                                       follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('account/edit.html')
 
@@ -62,14 +61,14 @@ class FlaskClientEditProfileTestCase(TestCase):
         THEN login page is returned
         """
         response = self.client.post('/account/edit',
-                                   follow_redirects=True)
+                                    follow_redirects=True)
         self.assert_200(response)
         self.assert_template_used('auth/login.html')
 
     def test_edit_profile_page_after_login_with_no_data_keep_current(self):
         """
         GIVEN an authenticated user
-        WHEN sending an HTTP POST request to '/account/edit' 
+        WHEN sending an HTTP POST request to '/account/edit'
              without form data (keep current)
         THEN edit profile page is returned
         """
@@ -82,7 +81,8 @@ class FlaskClientEditProfileTestCase(TestCase):
                                         follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('account/edit.html')
-            self.assert_message_flashed('Your profile has been successfully updated.')
+            self.assert_message_flashed(
+                'Your profile has been successfully updated.')
 
         u = User.query.filter_by(email='john@example.com').first()
         self.assertTrue(u.username == 'john')
@@ -91,7 +91,7 @@ class FlaskClientEditProfileTestCase(TestCase):
     def test_client_edit_profile_page_missing_username_keep_current(self):
         """
         GIVEN an authenticated user
-        WHEN sending an HTTP POST request to '/account/edit' 
+        WHEN sending an HTTP POST request to '/account/edit'
              without username (keep current)
         THEN edit profile page is returned
         """
@@ -105,7 +105,8 @@ class FlaskClientEditProfileTestCase(TestCase):
                 'company': 'ACME Co.'}, follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('account/edit.html')
-            self.assert_message_flashed('Your profile has been successfully updated.')
+            self.assert_message_flashed(
+                'Your profile has been successfully updated.')
 
         u = User.query.filter_by(email='dave@example.com').first()
         self.assertTrue(u.username == 'john')
@@ -114,7 +115,7 @@ class FlaskClientEditProfileTestCase(TestCase):
     def test_client_edit_profile_page_missing_email_keep_current(self):
         """
         GIVEN an authenticated user
-        WHEN sending an HTTP POST request to '/account/edit' 
+        WHEN sending an HTTP POST request to '/account/edit'
              without email (keep current)
         THEN edit profile page is returned
         """
@@ -128,7 +129,8 @@ class FlaskClientEditProfileTestCase(TestCase):
                 'company': 'ACME Co.'}, follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('account/edit.html')
-            self.assert_message_flashed('Your profile has been successfully updated.')
+            self.assert_message_flashed(
+                'Your profile has been successfully updated.')
 
         u = User.query.filter_by(email='john@example.com').first()
         self.assertTrue(u.username == 'dave')
@@ -137,7 +139,7 @@ class FlaskClientEditProfileTestCase(TestCase):
     def test_client_edit_profile_page_missing_company_keep_current(self):
         """
         GIVEN an authenticated user
-        WHEN sending an HTTP POST request to '/account/edit' 
+        WHEN sending an HTTP POST request to '/account/edit'
              without company (keep current)
         THEN edit profile page is returned
         """
@@ -151,7 +153,8 @@ class FlaskClientEditProfileTestCase(TestCase):
                 'email': 'dave@example.com'}, follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('account/edit.html')
-            self.assert_message_flashed('Your profile has been successfully updated.')
+            self.assert_message_flashed(
+                'Your profile has been successfully updated.')
 
         u = User.query.filter_by(email='dave@example.com').first()
         self.assertTrue(u.username == 'dave')
@@ -160,7 +163,7 @@ class FlaskClientEditProfileTestCase(TestCase):
     def test_client_edit_profile_page_invalid_email(self):
         """
         GIVEN an authenticated user
-        WHEN sending an HTTP POST request to '/account/edit' 
+        WHEN sending an HTTP POST request to '/account/edit'
              with invalid email
         THEN edit profile page is returned
         """
@@ -196,7 +199,8 @@ class FlaskClientEditProfileTestCase(TestCase):
                 'company': 'mycorp'}, follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('account/edit.html')
-            self.assert_message_flashed('Your profile has been successfully updated.')
+            self.assert_message_flashed(
+                'Your profile has been successfully updated.')
 
         u = User.query.filter_by(email='john@example.com').first()
         self.assertTrue(u.username == 'john')
@@ -255,7 +259,7 @@ class FlaskClientEditProfileTestCase(TestCase):
     def test_client_edit_profile_page(self):
         """
         GIVEN an authenticated user
-        WHEN sending an HTTP POST request to '/account/edit' 
+        WHEN sending an HTTP POST request to '/account/edit'
         THEN edit profile page is returned
         """
         with self.client:
@@ -269,11 +273,13 @@ class FlaskClientEditProfileTestCase(TestCase):
                 'company': 'ACME Co.'}, follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('account/edit.html')
-            self.assert_message_flashed('Your profile has been successfully updated.')
+            self.assert_message_flashed(
+                'Your profile has been successfully updated.')
 
         u = User.query.filter_by(email='dave@example.com').first()
         self.assertTrue(u.company == 'ACME Co.')
         self.assertTrue(u.username == 'dave')
+
 
 class FlaskClientDeleteProfileTestCase(TestCase):
     def create_app(self):
@@ -315,7 +321,7 @@ class FlaskClientDeleteProfileTestCase(TestCase):
                 'password': 'cat'}, follow_redirects=True)
 
             response = self.client.get('/account/delete',
-                                   follow_redirects=True)
+                                       follow_redirects=True)
             self.assert_405(response)
             self.assert_template_used('errors/405.html')
 
@@ -326,15 +332,14 @@ class FlaskClientDeleteProfileTestCase(TestCase):
         THEN login page is returned
         """
         response = self.client.post('/account/delete',
-                                   follow_redirects=True)
+                                    follow_redirects=True)
         self.assert_200(response)
         self.assert_template_used('auth/login.html')
 
-    def test_delete_profile_page_after_login(self):
+    def test_delete_profile_page_after_login_successful(self):
         """
         GIVEN an authenticated user
-        WHEN sending an HTTP POST request to '/account/delete' 
-             without form data
+        WHEN sending an HTTP POST request to '/account/delete'
         THEN edit profile page is returned
         """
         u = User.query.filter_by(email='john@example.com').first()
@@ -352,6 +357,6 @@ class FlaskClientDeleteProfileTestCase(TestCase):
             self.assert_message_flashed('Your account has been deleted.')
 
             u = User.query.filter_by(email='john@example.com').first()
-            self.assertTrue(u == None)
+            self.assertTrue(u is None)
             apps = Application.query.filter_by(user_id=user_id).all()
             self.assertTrue(len(apps) == 0)

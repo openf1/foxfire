@@ -20,36 +20,38 @@ class FlaskClientRegisterTestCase(TestCase):
 
     def test_register_page(self):
         """
-	GIVEN an anonymous user
-	WHEN sending an HTTP GET request to '/auth/register'
-	THEN registration page is returned
-	"""
+        GIVEN an anonymous user
+        WHEN sending an HTTP GET request to '/auth/register'
+        THEN registration page is returned
+        """
         response = self.client.get('/auth/register')
         self.assert_200(response)
         self.assert_template_used('auth/register.html')
 
     def test_register_with_no_data(self):
         """
-	GIVEN an anonymous user
-	WHEN sending an HTTP POST request to '/auth/register' without form data
-	THEN registration page is returned
-	"""
+        GIVEN an anonymous user
+        WHEN sending an HTTP POST request to '/auth/register'
+             without form data
+        THEN registration page is returned
+        """
         response = self.client.post('/auth/register')
         self.assert_200(response)
         self.assert_template_used('auth/register.html')
 
     def test_register_with_missing_username_data(self):
         """
-	GIVEN an anonymous user
-	WHEN sending an HTTP POST request to '/auth/register' with missing username
-	THEN registration page is returned
-	"""
-        response = self.client.post('/auth/register', data={
-            'email': 'john@example.com',
-            'company': 'ACME Co.',
-            'password': 'cat',
-            'password2': 'cat',
-        })
+        GIVEN an anonymous user
+        WHEN sending an HTTP POST request to '/auth/register'
+             with missing username
+        THEN registration page is returned
+        """
+        response = self.client.post(
+            '/auth/register',
+            data={'email': 'john@example.com',
+                  'company': 'ACME Co.',
+                  'password': 'cat',
+                  'password2': 'cat'})
         self.assert_200(response)
         self.assert_template_used('auth/register.html')
         self.assertTrue(re.search('Please enter your name',
@@ -57,16 +59,17 @@ class FlaskClientRegisterTestCase(TestCase):
 
     def test_register_with_missing_email_data(self):
         """
-	GIVEN an anonymous user
-	WHEN sending an HTTP POST request to '/auth/register' with missing email
-	THEN registration page is returned
-	"""
-        response = self.client.post('/auth/register', data={
-            'username': 'john',
-            'company': 'ACME Co.',
-            'password': 'cat',
-            'password2': 'cat',
-        })
+        GIVEN an anonymous user
+        WHEN sending an HTTP POST request to '/auth/register'
+             with missing email
+        THEN registration page is returned
+        """
+        response = self.client.post(
+            '/auth/register',
+            data={'username': 'john',
+                  'company': 'ACME Co.',
+                  'password': 'cat',
+                  'password2': 'cat'})
         self.assert_200(response)
         self.assert_template_used('auth/register.html')
         self.assertTrue(re.search('Please enter an email address',
@@ -74,17 +77,18 @@ class FlaskClientRegisterTestCase(TestCase):
 
     def test_register_with_invalid_email_data(self):
         """
-	GIVEN an anonymous user
-	WHEN sending an HTTP POST request to '/auth/register' with invalid email
-	THEN registration page is returned
-	"""
-        response = self.client.post('/auth/register', data={
-            'username': 'john',
-            'email': 'john',
-            'company': 'ACME Co.',
-            'password': 'cat',
-            'password2': 'cat',
-        })
+        GIVEN an anonymous user
+        WHEN sending an HTTP POST request to '/auth/register'
+             with invalid email
+        THEN registration page is returned
+        """
+        response = self.client.post(
+            '/auth/register',
+            data={'username': 'john',
+                  'email': 'john',
+                  'company': 'ACME Co.',
+                  'password': 'cat',
+                  'password2': 'cat'})
         self.assert_200(response)
         self.assert_template_used('auth/register.html')
         self.assertTrue(re.search('Please enter a valid email address',
@@ -92,33 +96,36 @@ class FlaskClientRegisterTestCase(TestCase):
 
     def test_register_with_missing_company_data(self):
         """
-	GIVEN an anonymous user
-	WHEN sending an HTTP POST request to '/auth/register' with missing company
-	THEN registration page is returned
-	"""
-        response = self.client.post('/auth/register', data={
-            'username': 'john',
-            'email': 'john@example.com',
-            'password': 'cat',
-            'password2': 'cat',
-        })
+        GIVEN an anonymous user
+        WHEN sending an HTTP POST request to '/auth/register'
+             with missing company
+        THEN registration page is returned
+        """
+        response = self.client.post(
+            '/auth/register',
+            data={'username': 'john',
+                  'email': 'john@example.com',
+                  'password': 'cat',
+                  'password2': 'cat'})
         self.assert_200(response)
         self.assert_template_used('auth/register.html')
-        self.assertTrue(re.search('Please enter your organization/company name',
-                                  response.get_data(as_text=True)))
+        self.assertTrue(
+            re.search('Please enter your organization/company name',
+                      response.get_data(as_text=True)))
 
     def test_register_with_missing_password_data(self):
         """
-	GIVEN an anonymous user
-	WHEN sending an HTTP POST request to '/auth/register' with missing password
-	THEN registration page is returned
-	"""
-        response = self.client.post('/auth/register', data={
-            'username': 'john',
-            'email': 'john@example.com',
-            'company': 'ACME Co.',
-            'password2': 'cat',
-        })
+        GIVEN an anonymous user
+        WHEN sending an HTTP POST request to '/auth/register'
+             with missing password
+        THEN registration page is returned
+        """
+        response = self.client.post(
+            '/auth/register',
+            data={'username': 'john',
+                  'email': 'john@example.com',
+                  'company': 'ACME Co.',
+                  'password2': 'cat'})
         self.assert_200(response)
         self.assert_template_used('auth/register.html')
         self.assertTrue(re.search(
@@ -128,17 +135,17 @@ class FlaskClientRegisterTestCase(TestCase):
 
     def test_register_with_missing_password2_data(self):
         """
-	GIVEN an anonymous user
-	WHEN sending an HTTP POST request to '/auth/register' with missing password
-	     confirmation
-	THEN registration page is returned
-	"""
-        response = self.client.post('/auth/register', data={
-            'username': 'john',
-            'email': 'john@example.com',
-            'company': 'ACME Co.',
-            'password': 'cat',
-        })
+        GIVEN an anonymous user
+        WHEN sending an HTTP POST request to '/auth/register'
+             with missing password confirmation
+        THEN registration page is returned
+        """
+        response = self.client.post(
+            '/auth/register',
+            data={'username': 'john',
+                  'email': 'john@example.com',
+                  'company': 'ACME Co.',
+                  'password': 'cat'})
         self.assert_200(response)
         self.assert_template_used('auth/register.html')
         self.assertTrue(re.search('Passwords must match',
@@ -151,13 +158,13 @@ class FlaskClientRegisterTestCase(TestCase):
              field that do not match
         THEN registration page is returned
         """
-        response = self.client.post('/auth/register', data={
-            'username': 'john',
-            'email': 'john@example.com',
-            'company': 'ACME Co.',
-            'password': 'S3cret!!',
-            'password2': 'dog'
-        })
+        response = self.client.post(
+            '/auth/register',
+            data={'username': 'john',
+                  'email': 'john@example.com',
+                  'company': 'ACME Co.',
+                  'password': 'S3cret!!',
+                  'password2': 'dog'})
         self.assert_200(response)
         self.assert_template_used('auth/register.html')
         self.assertTrue(re.search('Passwords must match',
@@ -165,37 +172,39 @@ class FlaskClientRegisterTestCase(TestCase):
 
     def test_register_with_weak_password_data(self):
         """
-	GIVEN an anonymous user
-	WHEN sending an HTTP POST request to '/auth/register' with weak password
-	THEN registration page is returned
-	"""
-        response = self.client.post('/auth/register', data={
-            'username': 'john',
-            'email': 'john@example.com',
-            'company': 'ACME Co.',
-            'password': 'cat',
-            'password2': 'cat',
-        })
+        GIVEN an anonymous user
+        WHEN sending an HTTP POST request to '/auth/register'
+             with weak password
+        THEN registration page is returned
+        """
+        response = self.client.post(
+            '/auth/register',
+            data={'username': 'john',
+                  'email': 'john@example.com',
+                  'company': 'ACME Co.',
+                  'password': 'cat',
+                  'password2': 'cat'})
         self.assert_200(response)
         self.assert_template_used('auth/register.html')
 
     def test_register_with_existing_username_data(self):
         """
-	GIVEN an anonymous user
-	WHEN sending an HTTP POST request to '/auth/register' for existing user
-	THEN registration page is returned
-	"""
+        GIVEN an anonymous user
+        WHEN sending an HTTP POST request to '/auth/register'
+             for existing user
+        THEN registration page is returned
+        """
         u = User(username='john')
         db.session.add(u)
         db.session.commit()
 
-        response = self.client.post('/auth/register', data={
-            'username': 'john',
-            'email': 'john@example.com',
-            'company': 'ACME Co.',
-            'password': 'S3cret!!',
-            'password2': 'S3cret!!',
-        })
+        response = self.client.post(
+            '/auth/register',
+            data={'username': 'john',
+                  'email': 'john@example.com',
+                  'company': 'ACME Co.',
+                  'password': 'S3cret!!',
+                  'password2': 'S3cret!!'})
         self.assert_200(response)
         self.assert_template_used('auth/register.html')
         self.assertTrue(re.search('Please use a different name',
@@ -203,21 +212,22 @@ class FlaskClientRegisterTestCase(TestCase):
 
     def test_register_with_existing_email_data(self):
         """
-	GIVEN an anonymous user
-	WHEN sending an HTTP POST request to '/auth/register' for existing email
-	THEN registration page is returned
-	"""
+        GIVEN an anonymous user
+        WHEN sending an HTTP POST request to '/auth/register'
+             for existing email
+        THEN registration page is returned
+        """
         u = User(email='john@example.com')
         db.session.add(u)
         db.session.commit()
 
-        response = self.client.post('/auth/register', data={
-            'username': 'john',
-            'email': 'john@example.com',
-            'company': 'ACME Co.',
-            'password': 'S3cret!!',
-            'password2': 'S3cret!!',
-        })
+        response = self.client.post(
+            '/auth/register',
+            data={'username': 'john',
+                  'email': 'john@example.com',
+                  'company': 'ACME Co.',
+                  'password': 'S3cret!!',
+                  'password2': 'S3cret!!'})
         self.assert_200(response)
         self.assert_template_used('auth/register.html')
         self.assertTrue(re.search('Please use a different email address',
@@ -242,15 +252,17 @@ class FlaskClientRegisterAuthenticatedTestCase(TestCase):
 
     def test_register_with_authenticated_user(self):
         """
-	GIVEN an authenticated and confirmed user
-	WHEN sending an HTTP POST request to '/auth/register'
-	THEN application dashboard page is returned 
-	"""
+        GIVEN an authenticated and confirmed user
+        WHEN sending an HTTP POST request to '/auth/register'
+        THEN application dashboard page is returned
+        """
         with self.client:
-            self.client.post('/auth/login', data={
-                'email': 'john@example.com',
-                'password': 'S3cret!!'
-            })
+            self.client.post(
+                '/auth/login',
+                data={'email': 'john@example.com',
+                      'password': 'S3cret!!'})
 
-            response = self.client.get('/auth/register', follow_redirects=True)
+            response = self.client.get(
+                '/auth/register',
+                follow_redirects=True)
             self.assert_200(response, '/application')
