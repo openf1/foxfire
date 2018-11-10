@@ -7,13 +7,26 @@
         <form method="post" novalidate>
           {{ form.hidden_tag() }}
           <div class="flex-column d-flex">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+	      {% if messages %}
+	        {% for category, message in messages %}
+		  {% if category == "error" %}
+		    <div class="alert alert-danger">
+		  {% else %}
+		    <div class="alert alert-success">
+		  {% endif %}
+	            <p>{{ message }}</p>
+	          </div>
+		{% endfor %}
+	      {% endif %}
+	    {% endwith %}
             <h3>Let's get started</h3>
             <p>Create your account by filling the form below.</p>
 	    <div class="row">
 	      <div class="form-group col-12">
-                {{ form.name.label(class_="control-label text-right") }}
-                {{ form.name(class_="form-control") }}
-                {% for error in form.name.errors %}
+                {{ form.username.label(class_="control-label text-right") }}
+                {{ form.username(class_="form-control") }}
+                {% for error in form.username.errors %}
 		  <span class="field-validation-error help-block">{{ error }}</span>
                 {% endfor %}
 	      </div>
@@ -25,6 +38,7 @@
                 {% for error in form.email.errors %}
 		  <span class="field-validation-error help-block">{{ error }}</span>
 		{% endfor %}
+	        <small class="text-muted">You use this email to sign in to your account.</small>
 	      </div>
 	    </div>
 	    <div class="row">
@@ -47,9 +61,9 @@
 	    </div>
 	    <div class="row">
 	      <div class="form-group col-12">
-                {{ form.confirm.label(class_="control-label text-right") }}
-                {{ form.confirm(class_="form-control") }}
-                {% for error in form.confirm.errors %}
+                {{ form.password2.label(class_="control-label text-right") }}
+                {{ form.password2(class_="form-control") }}
+                {% for error in form.password2.errors %}
 		  <span class="field-validation-error help-block">{{ error }}</span>
                 {% endfor %}
 	      </div>

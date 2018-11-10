@@ -1,0 +1,3 @@
+#!/bin/sh
+
+python -m smtpd -n -d -c DebuggingServer localhost:8025

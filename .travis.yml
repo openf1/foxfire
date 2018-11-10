@@ -5,9 +5,11 @@ language: python
 cache: pip
 
 python:
-    - 3.4
+    - 3.6
 
 install:
     - pip install -U pipenv
 
-script: echo "hello, travis!"
+before_script: pipenv shell
+
+script: make test

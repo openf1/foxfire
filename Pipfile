@@ -7,11 +7,31 @@ name = "pypi"
 
 [dev-packages]
 
+"flake8" = "*"
+pytest = "*"
+Flask-Testing = "*"
+fakeredis = "*"
+coverage = "*"
 
 
 [packages]
 
-flask = "*"
-flask-login = "*"
+Flask = "*"
+Flask-Login = "*"
 gunicorn = "*"
-flask-wtf = "*"
+Flask-WTF = "*"
+Flask-SQLAlchemy = "*"
+Flask-Migrate = "*"
+Flask-Mail = "*"
+PyJWT = "*"
+rq = "*"
+pycryptodome = "*"
+humanize = "*"
+python-dotenv = "*"
+Flask-Admin = "*"
+itsdangerous = "*"
+
+
+[requires]
+
+python_version = "3.4"

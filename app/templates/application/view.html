@@ -1,0 +1,146 @@
+{% extends "application/base.html" %}
+
+{% block content %}
+  <div id="title" class="stripe stripe-white">
+    <div class="container">
+      <h5 class="font-weight-normal m-0">{{ title }}</h5>
+    </div>
+  </div>
+  <section class="stripe">
+    <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+	    {% if category == "error" %}
+              <div class="alert alert-danger">
+	    {% else %}
+              <div class="alert alert-success">
+	    {% endif %}
+	      <p>{{ message }}</p>
+	    </div>
+          {% endfor %}
+	{% endif %}
+      {% endwith %}
+      <div class="row">
+        <div class="flex-column d-flex paperContent">
+	  <div class="header flex-row justify-content-between align-items-center">
+            <div class="d-flex flex-column align-items-start">
+	      <div class="d-flex flex-row align-items-center">
+      		<h3 id="applicationName" class="font-weight-light mr-4">{{ application.name }}</h3>
+		<span data-toggle="tooltip" data-placement="top">
+		  <div class="status">
+		    <i class="fa fa-check status-success"></i>
+		    Live
+		  </div>
+		</span>
+	      </div>
+	    </div>
+	    <div class="actions">
+	      <div class="dropdown overflow">
+	        <button class="btn overflow-menu dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+	        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+		  <a class="dropdown-item" href="{{ url_for('application.edit', aid=application.aid) }}">Edit Details</a>
+		  <div class="dropdown-divider"></div>
+		  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteApplication">Delete Application</a>
+	        </div>
+              </div>
+	    </div>
+	  </div>
+	  <div class="d-flex flex-row justify-content-between" style="border-bottom: 1px solid #ccc;">
+            <div class="leftCol">
+	      <div class="d-flex flex-row justify-content-between align-items-start">
+	        <div>
+		  <h5>Description</h5>
+		  <p class="muted-text font-weight-light">{{ application.description }}</p>
+		</div>
+	      </div>
+	      <div class="d-flex flex-row justify-content-between align-items-start">
+	        <div>
+		  <h5>Application ID</h5>
+	          <i data-toggle="tooltip" data-placement="top" title="Uniform Resource Name" class="fa fa-tag status-infoLight"></i>
+		  <span class="muted-text font-weight-light">{{ application.aid }}</span>
+		</div>
+	      </div>
+	      <div class="d-flex flex-row justify-content-between align-items-start">
+                <div class="d-flex flex-column align-items-start">
+	          <div class="d-flex flex-row align-items-center">
+	            <div>
+		      <h5>RSA Private Key</h5>
+		      <img data-toggle="tooltip" data-placement="top" title="SHA1 key fingerprint" width="16px" height="16px" src="data:image/png;base64,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">
+		      <span class="muted-text font-weight-light">{{ application.fingerprint }}</span>
+		    </div>
+		  </div>
+	        </div>
+		<div class="actions">
+		  <a class="btn btn-success" href="{{ url_for('application.download', aid=application.aid) }}">Download PEM</a>
+		  <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#renewKeys">Renew</a>
+		</div>
+              </div>
+	    </div>
+	  </div>
+        </div>  
+      </div>
+      <div class="modal fade" id="deleteApplication" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+	    <div class="modal-header">
+	      <h5 class="modal-title">Delete Application</h5>
+	      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        <span aria-hidden="true">×</span>
+	      </button>
+	    </div>
+	    <form method="post" action="{{ url_for('application.delete', aid=application.aid) }}">
+	      <div class="modal-body">
+	        <p><strong>Are you sure you want to delete this application?</strong></p>
+		<div class="alert alert-danger">
+		  <p>Once submitted, your instance will be deleted and your data will not be recoverable!</p>
+		</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+		<button type="submit" class="btn btn-danger">Delete Application</button>
+	      </div>
+              {{ form.hidden_tag() }}
+            </form>
+          </div>
+	</div>
+      </div>
+      <div class="modal fade" id="renewKeys" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+	    <div class="modal-header">
+	      <h5 class="modal-title">Renew Application Keys</h5>
+	      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        <span aria-hidden="true">×</span>
+	      </button>
+	    </div>
+	    <form method="post" action="{{ url_for('application.renew', aid=application.aid) }}">
+	      <div class="modal-body">
+	        <p><strong>Are you sure you want to renew your application RSA key?</strong></p>
+		<div class="alert alert-danger">
+		  <p>Once submitted, your current RSA key will not be recoverable!</p>
+		</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+		<button type="submit" class="btn btn-danger">Renew</button>
+	      </div>
+              {{ form.hidden_tag() }}
+            </form>
+          </div>
+	</div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </section>
+{% endblock %}
