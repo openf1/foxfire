@@ -9,7 +9,7 @@ python:
 
 install:
     - pip install -U pipenv
+    - pipenv install --dev
 
-before_script: pipenv shell
-
-script: make test
+script:
+    - make test-all
