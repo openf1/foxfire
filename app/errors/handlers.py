@@ -10,7 +10,7 @@ def not_found_error(error):
 
 
 @bp.app_errorhandler(405)
-def not_found_error(error):
+def method_not_allowed(error):
     return render_template("errors/405.html"), 405
 
 

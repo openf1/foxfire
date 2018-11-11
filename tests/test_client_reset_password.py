@@ -71,7 +71,7 @@ class FlaskClientResetPasswordRequestTestCase(TestCase):
     def test_reset_with_unknown_email_data(self):
         """
         GIVEN an anonymous user
-        WHEN sending an HTTP GET request to '/auth/reset_password_request'
+        WHEN sending an HTTP POST request to '/auth/reset_password_request'
              with unknown email
         THEN login page is returned
         """
@@ -80,14 +80,12 @@ class FlaskClientResetPasswordRequestTestCase(TestCase):
             data={'email': 'dave@example.com'},
             follow_redirects=True)
         self.assert_200(response)
-        self.assert_message_flashed(
-            'Check your email for the instructions to reset your password')
         self.assert_template_used('auth/login.html')
 
     def test_reset_with_known_email_data(self):
         """
         GIVEN an anonymous user
-        WHEN sending an HTTP GET request to '/auth/reset_password_request'
+        WHEN sending an HTTP POST request to '/auth/reset_password_request'
              with known email
         THEN login page is returned
         """

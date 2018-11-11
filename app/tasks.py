@@ -62,14 +62,16 @@ def gen_app_key(application_id, user_id):
         app = Application.query.get(application_id)
         fingerprint = _gen_key(app)
         payload = {
-            "msg": "Your new application <strong class='text-info'>{}</strong> is ready".format(app.name),
+            "msg": "Your new application "
+                   "<strong class='text-info'>{}</strong> "
+                   "is ready".format(app.name),
             "statusMessage": "Your application is ready",
             "applicationId": application_id,
             "applicationAid": app.aid,
             "fingerprint": fingerprint
         }
         _set_notification(user_id, payload)
-    except:
+    except Exception:
         _set_task_progress(100)
         app.logger.error("Unhandled exception", exc_info=sys.exc_info())
     finally:
@@ -81,14 +83,16 @@ def renew_app_key(application_id, user_id):
         app = Application.query.get(application_id)
         fingerprint = _gen_key(app)
         payload = {
-            "msg": "Application keys for <strong class='text-info'>{}</strong> have been renewed".format(app.name),
+            "msg": "Application keys for "
+                   "<strong class='text-info'>{}</strong> "
+                   "have been renewed".format(app.name),
             "statusMessage": "Your application is ready",
             "applicationId": application_id,
             "applicationAid": app.aid,
             "fingerprint": fingerprint
         }
         _set_notification(user_id, payload)
-    except:
+    except Exception:
         _set_task_progress(100)
         app.logger.error("Unhandled exception", exc_info=sys.exc_info())
     finally:

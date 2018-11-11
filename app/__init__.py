@@ -2,8 +2,6 @@ import logging
 import os
 
 from flask import Flask
-from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
@@ -66,4 +64,4 @@ def create_app(config_name='default'):
     return app
 
 
-from app import models
+from app import models  # noqa

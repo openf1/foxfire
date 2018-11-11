@@ -1,4 +1,3 @@
-from datetime import datetime
 from flask import jsonify
 from flask import url_for
 from flask_login import current_user

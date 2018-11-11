@@ -117,8 +117,9 @@ def change_password():
         db.session.commit()
         flash("Your password has been successfully changed.")
         return redirect(url_for("application.dashboard"))
-    return render_template("auth/change_password.html", title="Change Password",
-                           user=current_user, form=form)
+    return render_template(
+        "auth/change_password.html", title="Change Password",
+        user=current_user, form=form)
 
 
 @bp.route("/reset_password_request", methods=["GET", "POST"])
@@ -130,9 +131,11 @@ def reset_password_request():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             token = user.generate_reset_token()
-            send_email(user.email, "Reset Your Password",
-		       "auth/email/reset_password", user=user, token=token)
-        flash("Check your email for the instructions to reset your password")
+            send_email(
+                user.email, "Reset Your Password",
+                "auth/email/reset_password", user=user, token=token)
+            flash(
+                "Check your email for the instructions to reset your password")
         return redirect(url_for("auth.login"))
     return render_template("auth/reset_password_request.html",
                            title="Reset Password", form=form)

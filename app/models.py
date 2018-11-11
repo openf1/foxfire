@@ -1,14 +1,12 @@
-import datetime
 import json
 import redis
 import rq
 
-from datetime import datetime
+from datetime import datetime as dt
 from flask import current_app
 from flask_login import UserMixin
 from humanize import naturaltime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from time import time
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
@@ -28,8 +26,8 @@ class User(UserMixin, db.Model):
     company = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
-    member_since = db.Column(db.DateTime(), default=datetime.utcnow)
-    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+    member_since = db.Column(db.DateTime(), default=dt.utcnow)
+    last_seen = db.Column(db.DateTime(), default=dt.utcnow)
     last_notification_read_time = db.Column(db.DateTime)
     applications = db.relationship("Application", backref="owner",
                                    lazy="dynamic")
@@ -37,7 +35,7 @@ class User(UserMixin, db.Model):
                                     lazy="dynamic")
 
     @property
-    def password(self): 
+    def password(self):
         raise AttributeError("password is not a readable attribute")
 
     @password.setter
@@ -55,7 +53,7 @@ class User(UserMixin, db.Model):
         s = Serializer(current_app.config["SECRET_KEY"])
         try:
             data = s.loads(token.encode("utf-8"))
-        except:
+        except Exception:
             return False
         if data.get("confirm") != self.id:
             return False
@@ -72,7 +70,7 @@ class User(UserMixin, db.Model):
         s = Serializer(current_app.config["SECRET_KEY"])
         try:
             data = s.loads(token.encode("utf-8"))
-        except:
+        except Exception:
             return False
         user = User.query.get(data.get("reset"))
         if user is None:
@@ -82,7 +80,7 @@ class User(UserMixin, db.Model):
         return True
 
     def ping(self):
-        self.last_seen = datetime.utcnow()
+        self.last_seen = dt.utcnow()
         db.session.add(self)
 
     def add_notification(self, name, data):
@@ -92,12 +90,12 @@ class User(UserMixin, db.Model):
         return n
 
     def get_notifications(self):
-        last_read_time = self.last_notification_read_time or datetime(1900, 1, 1)
+        last_read_time = self.last_notification_read_time or dt(1900, 1, 1)
         return Notification.query.filter_by(user=self).filter(
             Notification.timestamp > last_read_time).all()
 
     def reset_notifications(self):
-        self.last_notification_read_time = datetime.utcnow()
+        self.last_notification_read_time = dt.utcnow()
 
     def get_applications(self):
         return Application.query.filter_by(owner=self).all()
@@ -110,7 +108,7 @@ class Application(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     description = db.Column(db.Text(), default='')
-    created = db.Column(db.DateTime(), default=datetime.utcnow)
+    created = db.Column(db.DateTime(), default=dt.utcnow)
     aid = db.Column(db.String(36))
     pubkey = db.Column(db.String())
     key = db.Column(db.String())
@@ -161,11 +159,11 @@ class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=dt.utcnow)
     payload_json = db.Column(db.Text)
 
     def get_naturaltime(self):
-        return naturaltime(datetime.utcnow() - self.timestamp)
+        return naturaltime(dt.utcnow() - self.timestamp)
 
     def get_data(self, key=None):
         if key:

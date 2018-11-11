@@ -50,7 +50,7 @@ clean-test: ## remove test and coverage artifacts
 	rm -rf pytestdebug.log
 
 lint: ## check style with flake8
-	flake8 app tests
+	flake8 app tests --ignore W605
 
 test: ## run tests quickly with the default Python
 	pytest
