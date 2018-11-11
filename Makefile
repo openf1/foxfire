@@ -58,19 +58,18 @@ test: ## run tests quickly with the default Python
 test-all: lint test coverage ## run all tests (linting, unittests, coverage) 
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source app -m pytest
-	coverage report -m
-	coverage html
-	$(BROWSER) htmlcov/index.html
+	coverage run --source app -m pytest 
+	coverage report -m --fail-under=100
 
 coverage-codacy: coverage ## upload code quality report to codacy
 	coverage xml
 	python-codacy-coverage -r coverage.xml
 
-coverage-html: coverage ## generate html code coverage report
+coverage-html: ## generate and show html code coverage report
 ifeq (,$(wildcard htmlcov/index.html))
-	@$(MAKE) coverage-html
+	@$(MAKE) coverage
 else
+	coverage html
 	$(BROWSER) htmlcov/index.html
 endif
 
