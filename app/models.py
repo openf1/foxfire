@@ -143,7 +143,7 @@ class Task(db.Model):
     def get_rq_job(self):
         try:
             rq_job = rq.job.Job.fetch(self.id, connection=current_app.redis)
-        except (redis.exceptions.RedisError, redis.exceptions.NoSuchJobError):  # pragma: no cover
+        except (redis.exceptions.RedisError, redis.exceptions.NoSuchJobError):  # pragma: no cover  # noqa: E501
             return None
         return rq_job
 

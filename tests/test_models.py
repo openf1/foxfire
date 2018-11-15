@@ -174,6 +174,7 @@ class ApplicationModelTestCase(TestCase):
         task2 = app.launch_task('test2')
 
         t = Task.query.filter_by(application_id='123456789').first()
+        self.assertTrue(t.id != task1.id)
         self.assertTrue(t.id == task2.id)
 
     def test_application_repr(self):
