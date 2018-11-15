@@ -1,12 +1,8 @@
-import re
-
-from flask import current_app
 from flask_testing import TestCase
 
 from app import create_app
 from app import db
 from app.models import User
-from app.models import Application
 
 
 class FlaskClientNotificationTestCase(TestCase):
@@ -83,4 +79,3 @@ class FlaskClientNotificationTestCase(TestCase):
             response = self.client.get('/notifications/reset')
             self.assert_200(response)
             self.assertEqual(response.json, dict())
-
