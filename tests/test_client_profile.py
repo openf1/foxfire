@@ -1,5 +1,6 @@
 import re
 
+from flask import current_app
 from flask_testing import TestCase
 
 from app import create_app
@@ -340,7 +341,7 @@ class FlaskClientDeleteProfileTestCase(TestCase):
         """
         GIVEN an authenticated user
         WHEN sending an HTTP POST request to '/account/delete'
-        THEN edit profile page is returned
+        THEN register page is returned
         """
         u = User.query.filter_by(email='john@example.com').first()
         user_id = u.id
@@ -360,3 +361,55 @@ class FlaskClientDeleteProfileTestCase(TestCase):
             self.assertTrue(u is None)
             apps = Application.query.filter_by(user_id=user_id).all()
             self.assertTrue(len(apps) == 0)
+
+    def test_delete_profile_page_after_login_successful_with_apps(self):
+        """
+        GIVEN an authenticated user with a number of applications
+        WHEN sending an HTTP POST request to '/account/delete'
+        THEN register page is returned
+        """
+        u = User.query.filter_by(email='john@example.com').first()
+        user_id = u.id
+
+        with self.client:
+            self.client.post('/auth/login', data={
+                'email': 'john@example.com',
+                'password': 'cat'}, follow_redirects=True)
+
+            app = Application(name='test', aid='1', owner=u)
+            db.session.add(app)
+            app2 = Application(name='test2', aid='2', owner=u)
+            db.session.add(app2)
+            app3 = Application(name='test3', aid='3', owner=u)
+            db.session.add(app3)
+            db.session.commit()
+            apps = Application.query.filter_by(user_id=user_id).all()
+
+            response = self.client.post('/account/delete',
+                                        follow_redirects=True)
+            self.assert_200(response)
+            self.assert_template_used('auth/register.html')
+            self.assert_message_flashed('Your account has been deleted.')
+
+            u = User.query.filter_by(email='john@example.com').first()
+            self.assertTrue(u is None)
+            apps = Application.query.filter_by(user_id=user_id).all()
+            self.assertTrue(len(apps) == 0)
+
+    def test_delete_profile_page_invalid_form_data(self):
+        """
+        GIVEN an authenticated user
+        WHEN sending an HTTP POST request to '/account/delete'
+             with invalid form data
+        THEN edit page is returned
+        """
+        with self.client:
+            self.client.post('/auth/login', data={
+                'email': 'john@example.com',
+                'password': 'cat'}, follow_redirects=True)
+
+            current_app.config['WTF_CSRF_ENABLED'] = True
+            response = self.client.post('/account/delete',
+                                        follow_redirects=True)
+            self.assert_200(response)
+            self.assert_template_used('account/edit.html')

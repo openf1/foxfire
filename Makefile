@@ -33,6 +33,7 @@ clean-build: ## remove build artifacts
 	rm -rf build/
 	rm -rf dist/
 	rm -rf .eggs/
+	rm -rf logs/
 	find . -name '*.egg-info' -exec rm -rf {} +
 	find . -name '*.egg' -exec rm -rf  {} +
 
@@ -58,6 +59,7 @@ test: ## run tests quickly with the default Python
 test-all: lint coverage ## run all tests (linting, unittests, coverage) 
 
 coverage: ## check code coverage quickly with the default Python
+	@$(MAKE) clean > /dev/null
 	coverage run --source app -m pytest 
 	coverage report -m --fail-under=100
 
@@ -66,7 +68,7 @@ coverage-codacy: coverage ## upload code quality report to codacy
 	python-codacy-coverage -r coverage.xml
 
 coverage-html: ## generate and show html code coverage report
-ifeq (,$(wildcard htmlcov/index.html))
+ifeq (,$(wildcard .coverage))
 	@$(MAKE) coverage
 else
 	coverage html

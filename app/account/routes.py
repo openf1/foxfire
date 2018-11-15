@@ -32,9 +32,9 @@ def edit():
 def delete():
     form = FlaskForm()
     if form.validate_on_submit():
-        db.session.delete(current_user)
         for application in current_user.applications.all():
             db.session.delete(application)
+        db.session.delete(current_user)
         db.session.commit()
         logout_user()
         flash("Your account has been deleted.")

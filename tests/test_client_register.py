@@ -260,9 +260,10 @@ class FlaskClientRegisterAuthenticatedTestCase(TestCase):
             self.client.post(
                 '/auth/login',
                 data={'email': 'john@example.com',
-                      'password': 'S3cret!!'})
+                      'password': 'cat'})
 
             response = self.client.get(
                 '/auth/register',
                 follow_redirects=True)
-            self.assert_200(response, '/application')
+            self.assert_200(response)
+            self.assert_template_used('application/dashboard.html')

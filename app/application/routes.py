@@ -44,13 +44,13 @@ def create():
 @bp.route("/view/<aid>")
 @login_required
 def view(aid):
-    application = Application.query.filter_by(aid=aid).first()
-    if not application:
+    current_app = Application.query.filter_by(aid=aid).first()
+    if not current_app:
         return render_template("application/errors/app_not_found.html")
-    form = FlaskForm()
+    form = FlaskForm(obj=current_app)
     return render_template("application/view.html",
                            title="Application Details", user=current_user,
-                           application=application, form=form)
+                           application=current_app, form=form)
 
 
 @bp.route("/edit/<aid>", methods=["GET", "POST"])
@@ -75,12 +75,12 @@ def edit(aid):
 @bp.route("/delete/<aid>", methods=["POST"])
 @login_required
 def delete(aid):
-    application = Application.query.filter_by(aid=aid).first()
-    if not application:
+    current_app = Application.query.filter_by(aid=aid).first()
+    if not current_app:
         return render_template("application/errors/app_not_found.html")
-    form = FlaskForm()
+    form = FlaskForm(obj=current_app)
     if form.validate_on_submit():
-        db.session.delete(application)
+        db.session.delete(current_app)
         db.session.commit()
         flash("Your application has been deleted.")
     return redirect(url_for("application.dashboard"))
@@ -89,22 +89,22 @@ def delete(aid):
 @bp.route("/renew/<aid>", methods=["POST"])
 @login_required
 def renew(aid):
-    application = Application.query.filter_by(aid=aid).first()
-    if not application:
+    current_app = Application.query.filter_by(aid=aid).first()
+    if not current_app:
         return render_template("application/errors/app_not_found.html")
-    form = FlaskForm()
+    form = FlaskForm(obj=current_app)
     if form.validate_on_submit():
-        application.launch_task("renew_app_key", current_user.id)
+        current_app.launch_task("renew_app_key", current_user.id)
         return redirect(url_for("application.dashboard"))
-    return redirect(url_for("application.view"))
+    return redirect(url_for("application.view", aid=aid))
 
 
 @bp.route("/download/<aid>")
 @login_required
 def download(aid):
-    application = Application.query.filter_by(aid=aid).first()
-    if not application:
+    current_app = Application.query.filter_by(aid=aid).first()
+    if not current_app:
         return render_template("application/errors/app_not_found.html")
-    filename = "{}.pem".format(application.fingerprint[0:8])
-    bio = BytesIO(application.key)
+    filename = "{}.pem".format(current_app.fingerprint[0:8])
+    bio = BytesIO(current_app.key)
     return send_file(bio, as_attachment=True, attachment_filename=filename)

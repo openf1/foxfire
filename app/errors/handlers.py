@@ -15,6 +15,6 @@ def method_not_allowed(error):
 
 
 @bp.app_errorhandler(500)
-def internal_error(error):
+def internal_error(error):  # pragma: no cover
     db.session.rollback()
     return render_template("errors/500.html"), 500

@@ -1,5 +1,6 @@
 import re
 
+from flask import current_app
 from flask_testing import TestCase
 
 from app import create_app
@@ -8,12 +9,11 @@ from app.models import User
 from app.models import Application
 
 
-class FlaskClientApplicationDashboadTestCase(TestCase):
+class FlaskClientApplicationDashboardTestCase(TestCase):
     def create_app(self):
         return create_app('testing')
 
     def setUp(self):
-        print(db)
         db.create_all()
 
         u = User(username='john',
@@ -618,6 +618,27 @@ class FlaskClientRenewApplicationTestCase(ApplicationTestCase):
                 follow_redirects=True)
             self.assert_200(response)
             self.assert_template_used('application/errors/app_not_found.html')
+
+    def test_renew_application_page_invalid_form(self):
+        """
+        GIVEN an authenticated user
+        WHEN sending an HTTP POST request to 'application/renew'
+             with empty form data
+        THEN application view page is returned
+        """
+        with self.client:
+            self.client.post(
+                '/auth/login',
+                data={'email': 'john@example.com',
+                      'password': 'cat'},
+                follow_redirects=True)
+
+            current_app.config['WTF_CSRF_ENABLED'] = True
+            response = self.client.post(
+                '/application/renew/1234567890',
+                follow_redirects=True)
+            self.assert_200(response)
+            self.assert_template_used('application/view.html')
 
     def test_renew_application_page(self):
         """

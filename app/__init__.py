@@ -28,6 +28,9 @@ def create_app(config_name='default'):
     login.init_app(app)
     mail.init_app(app)
 
+    from app.main import bp as main_bp
+    app.register_blueprint(main_bp)
+
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
 
@@ -43,7 +46,7 @@ def create_app(config_name='default'):
     from app.notifications import bp as notifications_bp
     app.register_blueprint(notifications_bp)
 
-    if app.config["LOG_TO_STDOUT"]:
+    if app.config["LOG_TO_STDOUT"]:  # pragma: no cover
         stream_handler = logging.StreamHandler()
         stream_handler.setLevel(logging.INFO)
         app.logger.addHandler(stream_handler)
