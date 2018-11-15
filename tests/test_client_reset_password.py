@@ -1,7 +1,9 @@
 import re
 import time
 
+from flask import current_app
 from flask_testing import TestCase
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from app import create_app
 from app import db
@@ -266,6 +268,42 @@ class FlaskClientResetPasswordTestCase(TestCase):
         """
         response = self.client.post(
             '/auth/reset_password/1234567890',
+            data={'password': 'S3cret!!',
+                  'password2': 'S3cret!!'},
+            follow_redirects=True)
+        self.assert_200(response)
+        self.assert_template_used('auth/login.html')
+
+    def test_reset_valid_token_with_invalid_encoded_user(self):
+        """
+        GIVEN an anonymous user
+        WHEN sending an HTTP POST request to '/auth/reset_password'
+             with valid token having invalid encoded user
+        THEN login page is returned
+        """
+        s = Serializer(current_app.config["SECRET_KEY"])
+        token = s.dumps({"reset": 6666}).decode('utf-8')
+
+        response = self.client.post(
+            '/auth/reset_password/{}'.format(token),
+            data={'password': 'S3cret!!',
+                  'password2': 'S3cret!!'},
+            follow_redirects=True)
+        self.assert_200(response)
+        self.assert_template_used('auth/login.html')
+
+    def test_reset_valid_token_with_invalid_key(self):
+        """
+        GIVEN an anonymous user
+        WHEN sending an HTTP POST request to '/auth/reset_password'
+             with valid token having invalid key
+        THEN login page is returned
+        """
+        s = Serializer(current_app.config["SECRET_KEY"])
+        token = s.dumps({"invalid": 6666}).decode('utf-8')
+
+        response = self.client.post(
+            '/auth/reset_password/{}'.format(token),
             data={'password': 'S3cret!!',
                   'password2': 'S3cret!!'},
             follow_redirects=True)

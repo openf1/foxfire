@@ -70,9 +70,9 @@ class User(UserMixin, db.Model):
         s = Serializer(current_app.config["SECRET_KEY"])
         try:
             data = s.loads(token.encode("utf-8"))
+            user = User.query.get(data.get("reset"))
         except Exception:
             return False
-        user = User.query.get(data.get("reset"))
         if user is None:
             return False
         user.password = new_password
@@ -96,9 +96,6 @@ class User(UserMixin, db.Model):
 
     def reset_notifications(self):
         self.last_notification_read_time = dt.utcnow()
-
-    def get_applications(self):
-        return Application.query.filter_by(owner=self).all()
 
     def __repr__(self):
         return "<User {}>".format(self.username)
@@ -146,7 +143,7 @@ class Task(db.Model):
     def get_rq_job(self):
         try:
             rq_job = rq.job.Job.fetch(self.id, connection=current_app.redis)
-        except (redis.exceptions.RedisError, redis.exceptions.NoSuchJobError):
+        except (redis.exceptions.RedisError, redis.exceptions.NoSuchJobError):  # pragma: no cover
             return None
         return rq_job
 
@@ -168,7 +165,7 @@ class Notification(db.Model):
     def get_data(self, key=None):
         if key:
             j = json.loads(str(self.payload_json))
-            return j[key]
+            return j.get(key, None)
         else:
             return json.loads(str(self.payload_json))
 
