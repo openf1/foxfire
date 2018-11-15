@@ -22,7 +22,7 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(EditProfileForm):
     password = PasswordField("Password", validators=[
-        Regexp("(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$",  # noqa: E501
+        Regexp(r"(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$",  # noqa: E501
                message="Please enter a strong password with a mix of numbers,"
                        "uppercase and lowercase letters,"
                        "and special characters")])
@@ -50,7 +50,7 @@ class ResetPasswordRequestForm(FlaskForm):
 
 class ResetPasswordForm(FlaskForm):
     password = PasswordField("Password", validators=[
-        Regexp("(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$",  # noqa: E501
+        Regexp(r"(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$",  # noqa: E501
                message="Please enter a strong password with a mix of numbers,"
                        "uppercase and lowercase letters,"
                        "and special characters")])
@@ -63,7 +63,7 @@ class ChangePasswordForm(FlaskForm):
     old_password = PasswordField("Current password", validators=[
         DataRequired(message="Please enter your current password")])
     password = PasswordField("New password", validators=[
-        Regexp("(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$",  # noqa: E501
+        Regexp(r"(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$",  # noqa: E501
                message="Please enter a new password with a mix of numbers,"
                        "uppercase and lowercase letters,"
                        "and special characters")])
