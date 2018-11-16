@@ -18,6 +18,10 @@ login.login_view = "auth.login"
 mail = Mail()
 
 
+def get_version():
+    return {'version': os.environ.get('VERSION') or '0.0.0-dev'}
+
+
 def create_app(config_name='default'):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
@@ -27,6 +31,8 @@ def create_app(config_name='default'):
     migrate.init_app(app, db, compare_type=True)
     login.init_app(app)
     mail.init_app(app)
+
+    app.context_processor(get_version)
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)

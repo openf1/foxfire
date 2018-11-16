@@ -39,6 +39,8 @@
 	    <i class="fa fa-user-circle" aria-hidden="true"></i>{{ user.username }}
 	  </a>
 	  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <div class="dropdown-item muted-text font-weight-light" id="version">openf1 v{{ version }}</div>
+	    <div class="dropdown-divider"></div>
 	    <a class="dropdown-item" id="sign-out" href="{{ url_for('auth.logout') }}">Sign Out</a>
 	    <a class="dropdown-item" href="{{ url_for('account.edit') }}">Profile</a>
 	    <a class="dropdown-item" href="{{ url_for('auth.change_password') }}">Change Password</a>

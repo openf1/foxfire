@@ -1,2 +1,2 @@
-web: flask db upgrade; gunicorn foxfire:app
+web: boot.sh; gunicorn foxfire:app
 worker: rq worker foxfire-tasks
