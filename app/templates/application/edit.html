@@ -1,0 +1,38 @@
+{% extends "application/base.html" %}
+
+{% block content %}
+  <div id="title" class="stripe stripe-white">
+    <div class="container">
+      <h5 class="font-weight-normal m-0">{{ title }}</h5>
+    </div>
+  </div>
+  <section class="stripe">
+    <div class="container">
+      <form method="post" novalidate>
+        {{ form.hidden_tag() }}
+      	<div class="row">
+          <div class="col-md-6 mb-4">
+            <div class="form-group">
+      	      {{ form.name.label(for="AppName") }}
+	      {{ form.name(class="form-control") }}
+              {% for error in form.name.errors %}
+	        <span class="field-validation-error help-block">{{ error }}</span>
+	      {% endfor %}
+	    </div>
+	    <div class="form-group">
+	      {{ form.description.label(for="AppDescription") }}
+	      {{ form.description(class="form-control") }}
+              {% for error in form.description.errors %}
+	        <span class="field-validation-error help-block">{{ error }}</span>
+	      {% endfor %}
+	    </div>
+	    <div class="col-xs-3" role="group">
+		    <button type="submit" value="Update" class="btn btn-success" formaction="{{ url_for('application.edit', aid=application.aid) }}">Save</button>
+		    <button type="submit" value="Cancel" class="btn btn-danger" formaction="{{ url_for('application.view', aid=application.aid) }}" formmethod="GET">Cancel</button>
+            </div>
+	  </div>
+        </div>
+      </form>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  {% include "head.html" %}
+  <body class="hosted">
+    {% include "application/navbar.html" %}
+    <main>
+      {% block content %}{% endblock %}
+      {% include "scripts.html" %}
+      {% block script %}{% endblock %}
+      <script>
+        function set_message_count(n) {
+          $('#message_count')
+	    .text(n)
+	    .css('visibility', n ? 'visible': 'hidden');
+	}
+
+        function update_app_status(notification) {
+	  var appId = notification.applicationId;
+          $('#appId' + appId + 'Spinner').remove();
+          $('#appId' + appId + 'SpinnerLabel').remove();
+          $('#appId' + appId + 'Status')
+	    .replaceWith('<div class="status"><i class="fa fa-check status-success"></i>Live</div></span>');
+	  $('#appId' + appId + 'Link')
+	    .attr('href', notification.link);
+        }
+
+        function add_notification(notification) {
+	  var body = '<div class="dropdown-item">'
+	     .concat(  '<i class="fa fa-check-circle status-success"></i>&nbsp;' + notification.msg)
+	     .concat(  '<div><small class="text-muted">' + notification.naturaltime + '</small></div>')
+	     .concat('</div>')
+	     .concat('<div class="dropdown-divider"></div>');
+          $('#notificationBody').append(body);
+	}
+
+        function mute_notification_dropdown() {
+          $('#navbarDropdown').removeAttr('data-toggle');
+	}
+
+        {% if current_user.is_authenticated %}
+          $(function() {
+	    $('#notification')
+	      .on('shown.bs.dropdown', function() {
+                set_message_count(0);
+	        $.ajax('{{ url_for("notifications.reset") }}');
+	      })
+	      .on('hidden.bs.dropdown', function() {
+		$('#notificationBody').remove();
+	        mute_notification_dropdown();
+	      });
+	  });
+
+          $(function() {
+	    setInterval(function() {
+              $.ajax('{{ url_for("notifications.all") }}').done(
+                function(notifications) {
+		  if (notifications.length == 0) {
+	            mute_notification_dropdown();
+		  }
+		  else {
+		    $('#navbarDropdown').attr('data-toggle', 'dropdown');
+                    $('#notificationBody').empty();
+	            for (var i = 0; i < notifications.length; i++) {
+		      if (notifications[i].name == 'unread_message_count') {
+		        set_message_count(notifications.length);
+			update_app_status(notifications[i]);
+			add_notification(notifications[i]);
+		      }
+		    }
+		  }
+	        }
+	      );
+	    }, 10000);
+	  });
+        </script>
+      {% endif %}
+    </main>
+  </body>
+
+</html>

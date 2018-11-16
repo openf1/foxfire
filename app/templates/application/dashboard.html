@@ -1,0 +1,77 @@
+{% extends "application/base.html" %}
+
+{% block content %}
+  <div id="title" class="stripe stripe-white">
+    <div class="container">
+      <h5 class="font-weight-normal m-0">{{ title }}</h5>
+    </div>
+  </div>
+  <section class="stripe">
+    <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            {% if category == "error" %}
+                <div class="alert alert-danger">
+	    {% else %}
+                <div class="alert alert-success">
+	    {% endif %}
+	      <p>{{ message }}</p>
+	    </div>
+          {% endfor %}
+	{% endif %}
+      {% endwith %}
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center"> 
+        <h2 class="mb-0">{{ user.username }}</h2>
+        <div class="actions">
+	  <a class="btn btn-primary" href="{{ url_for('application.create') }}">
+            Create New Application
+	  </a>
+        </div>
+      </div>
+      <span class="muted-text font-weight-light">{{ user.company }}</span>
+      <hr class="divider">
+      <div class="mb-5">
+        <div id="applications" class="card-deck">
+	  {% for application in user.applications.all() %}
+	    <div class="col-md-6 col-lg-4 col-xl-4 d-md-flex p-0">
+              <div class="card mb-4">
+		<div class="card-body pb-0 d-flex flex-column justify-content-between">
+	          <div class="d-flex flex-row justify-content-between">
+		    {% if application.ready %}	  
+		      <a id="appId{{ application.id }}Link" href="{{ url_for('application.view', aid=application.aid) }}">
+		        <h5 class="card-title">{{ application.name }}</h5>
+		      </a>
+		    {% else %}
+		      <a id="appId{{ application.id }}Link">
+		        <h5 class="card-title">{{ application.name }}</h5>
+		      </a>
+		    {% endif %}
+		  </div>
+                  <div class="card-text mb-3">
+	            <p class="muted-text font-weight-light">{{ application.aid }}</p>
+		  </div>
+		  <div class="card-footer d-flex flex-row mt-auto">
+	            <div id="appId{{ application.id }}Status" class="status">
+		      {% if application.ready %}
+		        <i class="fa fa-check status-success"></i>
+			Live
+		      {% else %}
+		        <div id="appId{{ application.id }}Spinner" class="sk-wave">
+		          <div class="sk-rect sk-rect1"></div>
+			  <div class="sk-rect sk-rect2"></div>
+			  <div class="sk-rect sk-rect3"></div>
+			</div>
+			<span id="appId{{ application.id }}SpinnerLabel" class="muted-text">Processing...</span>
+		      {% endif %}
+		    </div>
+                  </div>
+		</div>
+              </div>
+            </div>
+	  {% endfor %}
+	</div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

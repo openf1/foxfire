@@ -7,10 +7,14 @@
         <form method="post" novalidate>
           {{ form.hidden_tag() }}
           <div class="flex-column d-flex">
-            {% with messages = get_flashed_messages() %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
 	      {% if messages %}
-	        {% for message in messages %}
-		  <div class="alert alert-danger">
+	        {% for category, message in messages %}
+		  {% if category == "error" %}
+		    <div class="alert alert-danger">
+		  {% else %}
+		    <div class="alert alert-success">
+		  {% endif %}
 	            <p>{{ message }}</p>
 	          </div>
 		{% endfor %}
@@ -38,7 +42,7 @@
 	  </div>
 	  <div class="flex-row-reverse d-flex justify-content-between">
 	    {{ form.submit(class_="btn btn-success") }}
-	    <a href="/account/forgotpassword">Forgot your password?</a>
+	    <a href="{{ url_for('auth.reset_password_request') }}">Forgot your password?</a>
 	  </div>
 	</form>
       </div>

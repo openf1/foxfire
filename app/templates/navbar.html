@@ -1,10 +1,9 @@
 <nav class="navbar navbar-expand-md navbar-dark d-flex flex-row justify-content-between align-items-center">
   <div class="container">
     <div class="col-md-6 m-auto">
-      <a class="navbar-brand" href="/account/signin">
-        <img src="{{ url_for('static', filename='images/openf1-logo-white.png') }}" alt="openf1 account manager" height="35">
-	<span style="font-weight: bold; font-size: 18px; line-height: 20px; font-family: 'Open Sans'">openf1 account manager</span>
+      <a class="navbar-brand" href="{{ url_for('application.dashboard') }}">
+        <img src="{{ url_for('static', filename='images/openf1-logo-white.png') }}" alt="Account Manager" height="35">
+	<span style="font-weight: bold; font-size: 18px; line-height: 20px; font-family: 'Open Sans'">Account Manager</span>
       </a>
-    </div>
   </div>
 </nav>
