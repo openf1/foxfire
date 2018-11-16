@@ -17,7 +17,7 @@ app.app_context().push()
 
 def _set_task_progress(progress):
     job = get_current_job()
-    if job:
+    if job:  # pragma: no cover
         job.meta['progress'] = progress
         job.save_meta()
 
@@ -71,7 +71,7 @@ def gen_app_key(application_id, user_id):
             "fingerprint": fingerprint
         }
         _set_notification(user_id, payload)
-    except Exception:
+    except Exception:  # pragma: no cover
         _set_task_progress(100)
         app.logger.error("Unhandled exception", exc_info=sys.exc_info())
     finally:
@@ -92,7 +92,7 @@ def renew_app_key(application_id, user_id):
             "fingerprint": fingerprint
         }
         _set_notification(user_id, payload)
-    except Exception:
+    except Exception:  # pragma: no cover
         _set_task_progress(100)
         app.logger.error("Unhandled exception", exc_info=sys.exc_info())
     finally:

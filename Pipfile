@@ -1,37 +1,32 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [dev-packages]
-
 "flake8" = "*"
 pytest = "*"
-Flask-Testing = "*"
+flask-testing = "*"
 fakeredis = "*"
 coverage = "*"
-
+mock = "*"
 
 [packages]
-
-Flask = "*"
-Flask-Login = "*"
+flask = "*"
+flask-login = "*"
 gunicorn = "*"
-Flask-WTF = "*"
-Flask-SQLAlchemy = "*"
-Flask-Migrate = "*"
-Flask-Mail = "*"
-PyJWT = "*"
+flask-wtf = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+flask-mail = "*"
+pyjwt = "*"
 rq = "*"
 pycryptodome = "*"
 humanize = "*"
 python-dotenv = "*"
-Flask-Admin = "*"
+flask-admin = "*"
 itsdangerous = "*"
-
+"psycopg2" = "*"
 
 [requires]
-
 python_version = "3.4"
