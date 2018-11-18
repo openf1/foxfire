@@ -103,7 +103,7 @@ class User(UserMixin, db.Model):
 
 class Application(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64))
+    appname = db.Column(db.String(64))
     description = db.Column(db.Text(), default='')
     created = db.Column(db.DateTime(), default=dt.utcnow)
     aid = db.Column(db.String(36))

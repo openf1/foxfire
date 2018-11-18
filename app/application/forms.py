@@ -22,7 +22,7 @@ class CreateApplicationForm(FlaskForm):
 
     def validate_name(self, name):
         apps = Application.query.filter_by(owner=current_user).all()
-        if any(app.name == name.data for app in apps):
+        if any(app.appname == name.data for app in apps):
             raise ValidationError("Please use a different application name")
 
 
@@ -33,8 +33,8 @@ class EditApplicationForm(CreateApplicationForm):
     def validate_name(self, name):
         app = Application.query.filter_by(aid=self.aid.data).first()
         # when updating name, check if already in use
-        if app.name != name.data:
+        if app.appname != name.data:
             apps = Application.query.filter_by(owner=current_user).all()
-            if any(app.name == name.data for app in apps):
+            if any(app.appname == name.data for app in apps):
                 raise ValidationError(
                     "Please use a different application name")

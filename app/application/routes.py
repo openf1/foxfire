@@ -28,7 +28,7 @@ def dashboard():
 def create():
     form = CreateApplicationForm()
     if form.validate_on_submit():
-        application = Application(name=form.name.data,
+        application = Application(appname=form.name.data,
                                   description=form.description.data,
                                   aid=str(uuid4()),
                                   owner=current_user)
@@ -61,7 +61,7 @@ def edit(aid):
         return render_template("application/errors/app_not_found.html")
     form = EditApplicationForm(obj=current_app)
     if form.validate_on_submit():
-        current_app.name = form.name.data
+        current_app.appname = form.name.data
         current_app.description = form.description.data
         db.session.commit()
         flash("Your application details have been successfully updated.")

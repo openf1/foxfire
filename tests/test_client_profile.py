@@ -376,11 +376,11 @@ class FlaskClientDeleteProfileTestCase(TestCase):
                 'email': 'john@example.com',
                 'password': 'cat'}, follow_redirects=True)
 
-            app = Application(name='test', aid='1', owner=u)
+            app = Application(appname='test', aid='1', owner=u)
             db.session.add(app)
-            app2 = Application(name='test2', aid='2', owner=u)
+            app2 = Application(appname='test2', aid='2', owner=u)
             db.session.add(app2)
-            app3 = Application(name='test3', aid='3', owner=u)
+            app3 = Application(appname='test3', aid='3', owner=u)
             db.session.add(app3)
             db.session.commit()
             apps = Application.query.filter_by(user_id=user_id).all()

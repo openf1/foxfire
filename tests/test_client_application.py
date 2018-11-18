@@ -224,7 +224,7 @@ class FlaskClientCreateApplicationTestCase(TestCase):
         THEN create application page is returned
         """
         u = User.query.filter_by(email='john@example.com').first()
-        app = Application(name='test', owner=u)
+        app = Application(appname='test', owner=u)
         db.session.add(app)
         db.session.commit()
 
@@ -260,7 +260,7 @@ class ApplicationTestCase(TestCase):
         u.confirmed = True
         db.session.add(u)
 
-        app = Application(name='test',
+        app = Application(appname='test',
                           description='test application',
                           aid='1234567890',
                           owner=u)
@@ -413,7 +413,7 @@ class FlaskClientEditApplicationTestCase(ApplicationTestCase):
         THEN edit application page is returned
         """
         u = User.query.filter_by(email='john@example.com').first()
-        app = Application(name='another', owner=u)
+        app = Application(appname='another', owner=u)
         db.session.add(app)
         db.session.commit()
 

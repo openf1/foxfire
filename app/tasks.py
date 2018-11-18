@@ -64,7 +64,7 @@ def gen_app_key(application_id, user_id):
         payload = {
             "msg": "Your new application "
                    "<strong class='text-info'>{}</strong> "
-                   "is ready".format(app.name),
+                   "is ready".format(app.appname),
             "statusMessage": "Your application is ready",
             "applicationId": application_id,
             "applicationAid": app.aid,
@@ -85,7 +85,7 @@ def renew_app_key(application_id, user_id):
         payload = {
             "msg": "Application keys for "
                    "<strong class='text-info'>{}</strong> "
-                   "have been renewed".format(app.name),
+                   "have been renewed".format(app.appname),
             "statusMessage": "Your application is ready",
             "applicationId": application_id,
             "applicationAid": app.aid,
