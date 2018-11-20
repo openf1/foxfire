@@ -108,3 +108,6 @@ logs/
 
 # db files
 *.sqlite
+
+# bak files
+*.*~
