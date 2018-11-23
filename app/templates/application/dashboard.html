@@ -40,11 +40,11 @@
 	          <div class="d-flex flex-row justify-content-between">
 		    {% if application.ready %}	  
 		      <a id="appId{{ application.id }}Link" href="{{ url_for('application.view', aid=application.aid) }}">
-		        <h5 class="card-title">{{ application.name }}</h5>
+		        <h5 class="card-title">{{ application.appname }}</h5>
 		      </a>
 		    {% else %}
 		      <a id="appId{{ application.id }}Link">
-		        <h5 class="card-title">{{ application.name }}</h5>
+		        <h5 class="card-title">{{ application.appname }}</h5>
 		      </a>
 		    {% endif %}
 		  </div>
