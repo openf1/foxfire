@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 5990f4d01530
+Revision ID: 02ecaa28eee5
 Revises: 
-Create Date: 2018-11-18 21:44:36.119043
+Create Date: 2018-11-23 16:32:03.925117
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5990f4d01530'
+revision = '02ecaa28eee5'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -46,6 +46,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_index(op.f('ix_application_aid'), 'application', ['aid'], unique=True)
     op.create_table('notification',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=128), nullable=True),
@@ -59,7 +60,7 @@ def upgrade():
     op.create_index(op.f('ix_notification_timestamp'), 'notification', ['timestamp'], unique=False)
     op.create_table('task',
     sa.Column('id', sa.String(length=36), nullable=False),
-    sa.Column('application_id', sa.Integer(), nullable=True),
+    sa.Column('application_id', sa.String(length=36), nullable=True),
     sa.Column('complete', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['application_id'], ['application.aid'], ),
     sa.PrimaryKeyConstraint('id')
@@ -73,6 +74,7 @@ def downgrade():
     op.drop_index(op.f('ix_notification_timestamp'), table_name='notification')
     op.drop_index(op.f('ix_notification_name'), table_name='notification')
     op.drop_table('notification')
+    op.drop_index(op.f('ix_application_aid'), table_name='application')
     op.drop_table('application')
     op.drop_index(op.f('ix_user_username'), table_name='user')
     op.drop_index(op.f('ix_user_email'), table_name='user')

@@ -106,7 +106,7 @@ class Application(db.Model):
     appname = db.Column(db.String(64))
     description = db.Column(db.Text(), default='')
     created = db.Column(db.DateTime(), default=dt.utcnow)
-    aid = db.Column(db.String(36))
+    aid = db.Column(db.String(36), index=True, unique=True)
     pubkey = db.Column(db.String())
     key = db.Column(db.String())
     fingerprint = db.Column(db.String(40), default='')
@@ -137,7 +137,7 @@ class Application(db.Model):
 
 class Task(db.Model):
     id = db.Column(db.String(36), primary_key=True)
-    application_id = db.Column(db.Integer, db.ForeignKey("application.aid"))
+    application_id = db.Column(db.String(36), db.ForeignKey("application.aid"))
     complete = db.Column(db.Boolean, default=False)
 
     def get_rq_job(self):
