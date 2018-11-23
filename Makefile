@@ -51,7 +51,7 @@ clean-test: ## remove test and coverage artifacts
 	rm -rf pytestdebug.log
 
 lint: ## check style with flake8
-	flake8 app tests foxfire.py config.py --ignore W605
+	flake8 app tests foxfire.py run-worker.py config.py --ignore W605
 
 test: ## run tests quickly with the default Python
 	pytest

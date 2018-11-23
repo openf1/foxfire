@@ -1,3 +1,3 @@
 release: ./boot.sh
 web: gunicorn foxfire:app
-worker: rq worker foxfire-tasks
+worker: python -u run-worker.py
