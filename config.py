@@ -16,6 +16,8 @@ class Config(object):
     MAIL_PORT = int(os.environ.get("MAIL_PORT") or 25)
     MAIL_SUBJECT_PREFIX = "[openf1]"
     MAIL_SENDER = "openf1 admin <admin@openf1.com>"
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME") or None)
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD") or None)
 
     @staticmethod
     def init_app(app):
