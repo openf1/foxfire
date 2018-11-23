@@ -6,10 +6,7 @@ from rq import Queue
 from rq import Worker
 
 
-redis_url = os.getenv('REDIS_URL')
-if not redis_url:
-    raise RuntimeError('Set up Redis first.')
-
+redis_url = os.getenv('REDIS_URL', 'redis://')
 conn = redis.from_url(redis_url)
 
 

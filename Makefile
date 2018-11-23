@@ -87,7 +87,7 @@ db-upgrade: ## migrate and upgrade db
 	flask db upgrade
 
 rq-worker: ## launch rq worker
-	scripts/worker
+	python -u run-worker.py
 
 mailer: ## launch simple Python mail server daemon
 	scripts/smtpd
