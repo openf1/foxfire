@@ -1,9 +1,12 @@
 [[source]]
+
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
+
 [dev-packages]
+
 "flake8" = "*"
 pytest = "*"
 flask-testing = "*"
@@ -11,7 +14,9 @@ fakeredis = "*"
 coverage = "*"
 mock = "*"
 
+
 [packages]
+
 flask = "*"
 flask-login = "*"
 gunicorn = "*"
@@ -27,6 +32,9 @@ python-dotenv = "*"
 flask-admin = "*"
 itsdangerous = "*"
 "psycopg2-binary" = "*"
+redis = "==2.10.6"
+
 
 [requires]
+
 python_version = "3.4"
