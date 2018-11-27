@@ -19,7 +19,7 @@ mail = Mail()
 
 
 def get_version():
-    return {'version': os.environ.get('VERSION') or '0.0.0-dev'}
+    return {'version': os.environ.get('APP_VERSION') or '0.0.0-dev'}
 
 
 def create_app(config_name='default'):
