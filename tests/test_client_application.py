@@ -218,7 +218,7 @@ class FlaskClientCreateApplicationTestCase(TestCase):
 
     def test_create_app_page_after_login_existing_app(self):
         """
-        GIVEN an authenticated used
+        GIVEN an authenticated user
         WHEN sending an HTTP POST request to '/application/create'
              with existing application name
         THEN create application page is returned
@@ -265,7 +265,7 @@ class ApplicationTestCase(TestCase):
                           aid='1234567890',
                           owner=u)
         app.fingerprint = 'abcdef1234567890'
-        app.key = b'thisisthekey'
+        app.key = 'thisisthekey'
         db.session.add(app)
 
         db.session.commit()
@@ -708,7 +708,7 @@ class FlaskClientDownloadApplicationTestCase(ApplicationTestCase):
 
     def test_download_application_page(self):
         """
-        GIVEN an authenticated used
+        GIVEN an authenticated user
         WHEN sending an HTTP GET request to '/application/download'
         THEN pem file is returned
         """
