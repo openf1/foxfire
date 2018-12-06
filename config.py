@@ -7,6 +7,10 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, ".env"))
 
 
+def unquote(s):
+    return s.strip()[1:-1]
+
+
 class Config(object):
     SECRET_KEY = os.environ.get("SECRET_KEY") or "you-will-never-guess"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -25,6 +29,12 @@ class Config(object):
         app.redis = Redis.from_url(os.environ.get("REDIS_URL") or "redis://")
         app.task_queue = rq.Queue("foxfire-tasks", connection=app.redis)
 
+    @staticmethod
+    def version():
+        with open('VERSION', 'r') as f:
+            _, v = f.read().split('=')
+        return {'version': unquote(v)}
+
 
 class DevelopmentConfig(Config):
     DEBUG = True
@@ -32,6 +42,17 @@ class DevelopmentConfig(Config):
         "sqlite:///" + os.path.join(basedir, "data-dev.sqlite")
     MAIL_SERVER = os.environ.get("MAIL_SERVER") or "localhost"
     MAIL_PORT = int(os.environ.get("MAIL_PORT") or 8025)
+
+    @staticmethod
+    def version():
+        with open('VERSION', 'r') as f:
+            _, v = f.read().split('=')
+        sha = os.environ.get('GIT_SHA')
+        if sha:
+            suffix = '+{}'.format(sha[0:4])
+        else:
+            suffix = '+dev'
+        return {'version': unquote(v) + suffix}
 
 
 class TestingConfig(Config):
@@ -46,6 +67,12 @@ class TestingConfig(Config):
         app.redis = Redis.from_url(os.environ.get("REDIS_URL") or "redis://")
         app.task_queue = rq.Queue(
             "foxfire-tasks", connection=app.redis)
+
+    @staticmethod
+    def version():
+        with open('VERSION', 'r') as f:
+            _, v = f.read().split('=')
+        return {'version': unquote(v) + '-rc'}
 
 
 class ProductionConfig(Config):
