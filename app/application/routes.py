@@ -6,7 +6,7 @@ from flask import url_for
 from flask_login import current_user
 from flask_login import login_required
 from flask_wtf import FlaskForm
-from io import StringIO
+from io import BytesIO
 from uuid import uuid4
 
 from app import db
@@ -106,5 +106,5 @@ def download(aid):
     if not current_app:
         return render_template("application/errors/app_not_found.html")
     filename = "{}.pem".format(current_app.fingerprint[0:8])
-    sio = StringIO(str(current_app.key))
-    return send_file(sio, as_attachment=True, attachment_filename=filename)
+    bio = BytesIO(current_app.key)
+    return send_file(bio, as_attachment=True, attachment_filename=filename)
