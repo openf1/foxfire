@@ -17,10 +17,10 @@ def _clear():
     from app import models, db
 
     click.echo('Clearing data...')
-    models.User.query.delete()
-    models.Application.query.delete()
-    models.Task.query.delete()
     models.Notification.query.delete()
+    models.Task.query.delete()
+    models.Application.query.delete()
+    models.User.query.delete()
     db.session.commit()
 
 
