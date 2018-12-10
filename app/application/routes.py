@@ -106,5 +106,5 @@ def download(aid):
     if not current_app:
         return render_template("application/errors/app_not_found.html")
     filename = "{}.pem".format(current_app.fingerprint[0:8])
-    sio = StringIO(current_app.key)
+    sio = StringIO(str(current_app.key))
     return send_file(sio, as_attachment=True, attachment_filename=filename)
