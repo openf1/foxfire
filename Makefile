@@ -86,6 +86,16 @@ db-migrate: ## generate db migration scripts
 db-upgrade: ## migrate and upgrade db
 	flask db upgrade
 
+db-clean: ## clear and seed data to db
+	flask db2 clear
+	flask db2 seed
+
+db-clear: ## clear db tables
+	flask db2 clear
+
+db-seed: ## add seed data to db
+	flask db2 seed
+
 rq-worker: ## launch rq worker
 	python -u run-worker.py
 
