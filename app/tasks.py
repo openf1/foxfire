@@ -39,11 +39,11 @@ def _gen_key(application):
     time.sleep(2)
     _set_task_progress(25)
 
-    application.pubkey = key.publickey().export_key()
+    application.pubkey = key.publickey().export_key().decode('utf-8')
     time.sleep(2)
     _set_task_progress(50)
 
-    application.key = key.export_key()
+    application.key = key.export_key().decode('utf-8')
     time.sleep(2)
     _set_task_progress(75)
 

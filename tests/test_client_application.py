@@ -265,7 +265,7 @@ class ApplicationTestCase(TestCase):
                           aid='1234567890',
                           owner=u)
         app.fingerprint = 'abcdef1234567890'
-        app.key = b'thisisthekey'
+        app.key = b'thisisthekey'.decode('utf-8')
         db.session.add(app)
 
         db.session.commit()
