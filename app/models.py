@@ -29,10 +29,10 @@ class User(UserMixin, db.Model):
     member_since = db.Column(db.DateTime(), default=dt.utcnow)
     last_seen = db.Column(db.DateTime(), default=dt.utcnow)
     last_notification_read_time = db.Column(db.DateTime)
-    applications = db.relationship("Application", backref="owner",
-                                   lazy="dynamic")
-    notifications = db.relationship("Notification", backref="user",
-                                    lazy="dynamic")
+    applications = db.relationship(
+        "Application", backref="owner", lazy="dynamic", cascade="all, delete")
+    notifications = db.relationship(
+        "Notification", backref="user", lazy="dynamic", cascade="all, delete")
 
     @property
     def password(self):
@@ -110,8 +110,10 @@ class Application(db.Model):
     pubkey = db.Column(db.String())
     key = db.Column(db.String())
     fingerprint = db.Column(db.String(40), default='')
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    tasks = db.relationship('Task', backref='application', lazy='dynamic')
+    user_id = db.Column(
+        db.Integer, db.ForeignKey('user.id', ondelete="cascade"))
+    tasks = db.relationship('Task', backref='application',
+                            lazy='dynamic', cascade="all, delete")
 
     def launch_task(self, name, *args, **kwargs):
         rq_job = current_app.task_queue.enqueue(
@@ -137,7 +139,8 @@ class Application(db.Model):
 
 class Task(db.Model):
     id = db.Column(db.String(36), primary_key=True)
-    application_id = db.Column(db.String(36), db.ForeignKey("application.aid"))
+    application_id = db.Column(
+        db.String(36), db.ForeignKey("application.aid", ondelete="cascade"))
     complete = db.Column(db.Boolean, default=False)
 
     def get_rq_job(self):
